@@ -1,8 +1,6 @@
 package champ.fish.Aftas.Models.Entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
@@ -13,9 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Embeddable
 public class EmbeddedRanking implements Serializable {
-    @Column(name = "competition_code")
-    private String competitionCode;
+    @ManyToOne
+    @JoinColumn(name = "competition_code")
+    private Competition competitionCode;
 
-    @Column(name = "member_num")
-    private Integer memberNum;
+    @ManyToOne
+    @JoinColumn(name = "member_num")
+    private Member memberNum;
+
 }

@@ -40,7 +40,7 @@ public final class Member {
     @NonNull
     private String identityNumber;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "id.memberNum")
     private List<Ranking> rankings;
 
     @OneToMany(mappedBy = "member")

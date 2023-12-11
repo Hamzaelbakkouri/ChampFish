@@ -2,21 +2,19 @@ package champ.fish.Aftas.Models.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
 
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
 public final class Fish {
     @Id
     @Column(unique = true, nullable = false)
-    @NonNull
     private String name;
 
     @NotNull
@@ -24,6 +22,7 @@ public final class Fish {
     private Double averageWeight;
 
     @ManyToOne
+    @NotNull
     private Level level;
 
     @OneToMany(mappedBy = "fish")

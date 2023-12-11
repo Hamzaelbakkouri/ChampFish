@@ -1,5 +1,6 @@
 package champ.fish.Aftas.Models.Entities;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -7,19 +8,18 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public final class Level {
     @Id
-    @Column(unique = true)
-    private String code;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer code;
 
-    @NonNull
+    @Nonnull
     private String description;
 
-    @NonNull
+    @Nonnull
     @Min(value = 0)
     private Integer points;
 

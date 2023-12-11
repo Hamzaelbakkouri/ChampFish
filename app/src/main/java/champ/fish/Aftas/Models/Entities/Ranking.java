@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -15,22 +17,7 @@ import lombok.Setter;
 public final class Ranking {
     @EmbeddedId
     private EmbeddedRanking id;
-
-    @MapsId("competitionCode")
-    @ManyToOne
-    @JoinColumn(name = "competition_code")
-    private Competition competition;
-
-    @MapsId("memberNum")
-    @ManyToOne
-    @JoinColumn(name = "member_num")
-    private Member member;
-
-    @NotNull
-    @Min(value = 1)
+    private Integer score;
     private Integer rank;
 
-    @NotNull
-    @Min(value = 0)
-    private Integer score;
 }
