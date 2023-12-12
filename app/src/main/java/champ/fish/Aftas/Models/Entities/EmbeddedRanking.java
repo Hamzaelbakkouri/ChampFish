@@ -7,16 +7,23 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @EqualsAndHashCode
 @Embeddable
 public class EmbeddedRanking implements Serializable {
-    @ManyToOne
-    @JoinColumn(name = "competition_code")
-    private Competition competitionCode;
+    public EmbeddedRanking(Competition competition, Member member) {
+        this.competition = competition;
+        this.member = member;
+    }
+    public EmbeddedRanking()
+    {
+    }
 
     @ManyToOne
-    @JoinColumn(name = "member_num")
-    private Member memberNum;
+    @JoinColumn(name = "competition")
+    private Competition competition;
+
+    @ManyToOne
+    @JoinColumn(name = "member")
+    private Member member;
 
 }

@@ -15,6 +15,6 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Embeddable
 public class RankingEmbeddedDTOresp {
-    private CompetitionDTO competitionCode;
-    private MemberDTOresp memberNum;
+    private CompetitionDTO competition;
+    private MemberDTOresp member;
 }

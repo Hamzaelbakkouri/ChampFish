@@ -16,4 +16,8 @@ public interface Ranking_Interface {
     RankingDTOresp get(Integer member, String competition);
 
     List<RankingDTOresp> getAll();
+
+    List<RankingDTOresp> CountRankings(String competitionCode);
+
+    List<RankingDTOresp> getRankings(String competitionCode);
 }

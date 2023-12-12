@@ -42,10 +42,15 @@ public class HuntingService implements Hunting_Interface {
             huntingE.setFish(fish.get());
             huntingE.setMember(member.get());
             huntingE.setCompetition(competition.get());
+            Optional<Hunting> existHunting = huntingRepository.findByCompetitionAndAndFishAndMember(competition.get(), fish.get(), member.get());
+            if (existHunting.isPresent()) {
+                huntingE.setId(existHunting.get().getId());
+                huntingE.setNumberOfFish(huntingE.getNumberOfFish() + existHunting.get().getNumberOfFish());
+            }
+            huntingE = huntingRepository.save(huntingE);
+            return modelMapper.map(huntingE, HuntingDTOresp.class);
         }
-
-        huntingE = huntingRepository.save(huntingE);
-        return modelMapper.map(huntingE, HuntingDTOresp.class);
+        return null;
     }
 
     @Override

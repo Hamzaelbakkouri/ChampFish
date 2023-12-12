@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public final class RankingDTOresp {
-    private RankingEmbeddedDTO id;
+    private RankingEmbeddedDTOresp id;
     private Integer rank;
     private Integer score;
 }

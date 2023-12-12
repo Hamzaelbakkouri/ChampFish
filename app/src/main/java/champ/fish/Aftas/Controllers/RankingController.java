@@ -2,6 +2,7 @@ package champ.fish.Aftas.Controllers;
 
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTO;
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOresp;
+import champ.fish.Aftas.Services.Implementations.RankingService;
 import champ.fish.Aftas.Services.Interfaces.Ranking_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -67,7 +68,7 @@ public class RankingController {
         result.put("Message", "Rankings Not Found");
         return ResponseEntity.status(400).body(result);
     }
-    
+
 
     @DeleteMapping(path = "/{member}/{competition}")
     public ResponseEntity<?> delete(@Valid @PathVariable Integer member, @PathVariable String competition) {
@@ -79,5 +80,17 @@ public class RankingController {
         }
         result.put("message", "ranking Not Found");
         return ResponseEntity.status(404).body(result);
+    }
+
+    @GetMapping("/done/{competitionCode}")
+    public ResponseEntity<List<RankingDTOresp>> getRankingsForCompetition(@PathVariable String competitionCode) {
+        List<RankingDTOresp> rankings = rankingInterface.CountRankings(competitionCode);
+        return ResponseEntity.ok(rankings);
+    }
+
+    @GetMapping("/rapport/{competitionCode}")
+    public ResponseEntity<List<RankingDTOresp>> getRapportForCompetition(@PathVariable String competitionCode) {
+        List<RankingDTOresp> rankings = rankingInterface.getRankings(competitionCode);
+        return ResponseEntity.ok(rankings);
     }
 }

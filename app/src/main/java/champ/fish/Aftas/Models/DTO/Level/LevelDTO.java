@@ -2,6 +2,7 @@ package champ.fish.Aftas.Models.DTO.Level;
 
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,6 @@ public final class LevelDTO {
     @NotBlank(message = "Description can't be Null")
     private String description;
 
-    @NotBlank(message = "points can't be Null")
+    @NotNull(message = "points can't be Null")
     private int points;
 }

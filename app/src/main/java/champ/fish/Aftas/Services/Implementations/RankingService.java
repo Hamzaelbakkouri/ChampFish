@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @AllArgsConstructor
 @Service
@@ -29,8 +30,8 @@ public class RankingService implements Ranking_Interface {
 
     @Override
     public RankingDTOresp create(RankingDTO rankingDTO) {
-        Optional<Member> member = this.memberRepository.findById(rankingDTO.getId().getMemberNum());
-        Optional<Competition> competition = this.competitionRepository.findById(rankingDTO.getId().getCompetitionCode());
+        Optional<Member> member = this.memberRepository.findById(rankingDTO.getId().getMember_num());
+        Optional<Competition> competition = this.competitionRepository.findById(rankingDTO.getId().getCompetition_code());
         if (member.isPresent() && competition.isPresent()) {
             Ranking ranking = modelMapper.map(rankingDTO, Ranking.class);
             return modelMapper.map(this.rankingRepository.save(ranking), RankingDTOresp.class);
@@ -44,8 +45,8 @@ public class RankingService implements Ranking_Interface {
         Optional<Competition> competition = this.competitionRepository.findById(cmp);
         EmbeddedRanking embeddedRankingID = new EmbeddedRanking();
         if (member.isPresent() && competition.isPresent()) {
-            embeddedRankingID.setCompetitionCode(competition.get());
-            embeddedRankingID.setMemberNum(member.get());
+            embeddedRankingID.setCompetition(competition.get());
+            embeddedRankingID.setMember(member.get());
             Ranking ranking = modelMapper.map(rankingDTO, Ranking.class);
             ranking.setId(embeddedRankingID);
             return modelMapper.map(this.rankingRepository.save(ranking), RankingDTOresp.class);
@@ -59,8 +60,8 @@ public class RankingService implements Ranking_Interface {
         Optional<Competition> competition = this.competitionRepository.findById(cmp);
         EmbeddedRanking embeddedRankingID = new EmbeddedRanking();
         if (member.isPresent() && competition.isPresent()) {
-            embeddedRankingID.setCompetitionCode(competition.get());
-            embeddedRankingID.setMemberNum(member.get());
+            embeddedRankingID.setCompetition(competition.get());
+            embeddedRankingID.setMember(member.get());
             this.rankingRepository.deleteById(embeddedRankingID);
             return true;
         }
@@ -73,8 +74,8 @@ public class RankingService implements Ranking_Interface {
         Optional<Competition> competition = this.competitionRepository.findById(cmp);
         EmbeddedRanking embeddedRankingID = new EmbeddedRanking();
         if (member.isPresent() && competition.isPresent()) {
-            embeddedRankingID.setCompetitionCode(competition.get());
-            embeddedRankingID.setMemberNum(member.get());
+            embeddedRankingID.setCompetition(competition.get());
+            embeddedRankingID.setMember(member.get());
             return modelMapper.map(this.rankingRepository.findById(embeddedRankingID).get(), RankingDTOresp.class);
         }
         throw new NotFoundExeption("Member or Competition Not Found");
@@ -87,5 +88,19 @@ public class RankingService implements Ranking_Interface {
             return ranking.stream().map(ranking1 -> modelMapper.map(ranking1, RankingDTOresp.class)).collect(Collectors.toList());
         }
         throw new NotFoundExeption("No Ranking Found");
+    }
+
+    public List<RankingDTOresp> getRankings(String competitionCode){
+        return rankingRepository.getAllByCompetition(competitionCode)
+                .stream().map(ranking -> modelMapper.map(ranking,RankingDTOresp.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<RankingDTOresp> CountRankings(String competitionCode) {
+        List<Ranking> rankings = rankingRepository.calculateRankingsForCompetition(competitionCode);
+        return IntStream.range(0,rankings.size()).mapToObj(i -> {
+            rankings.get(i).setRank(i+1);
+            return modelMapper.map(rankingRepository.save(rankings.get(i)),RankingDTOresp.class);
+        }).collect(Collectors.toList());
     }
 }

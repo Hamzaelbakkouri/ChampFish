@@ -48,7 +48,7 @@ public final class Competition {
     private Float amount;
 
     @NonNull
-    @OneToMany(mappedBy = "id.competitionCode")
+    @OneToMany(mappedBy = "id.competition")
     private List<Ranking> rankings;
 
     @NonNull

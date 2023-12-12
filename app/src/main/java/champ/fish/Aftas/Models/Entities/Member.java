@@ -22,8 +22,8 @@ public final class Member {
     @ManyToMany
     @JoinTable(
             name = "ranking",
-            joinColumns = @JoinColumn(name = "member_num"),
-            inverseJoinColumns = @JoinColumn(name = "competition_code")
+            joinColumns = @JoinColumn(name = "member"),
+            inverseJoinColumns = @JoinColumn(name = "competition")
     )
     private Set<Competition> competitions = new HashSet<>();
 
@@ -40,7 +40,7 @@ public final class Member {
     @NonNull
     private String identityNumber;
 
-    @OneToMany(mappedBy = "id.memberNum")
+    @OneToMany(mappedBy = "id.member")
     private List<Ranking> rankings;
 
     @OneToMany(mappedBy = "member")
