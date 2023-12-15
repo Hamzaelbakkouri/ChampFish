@@ -1,0 +1,64 @@
+<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-200 bg-opacity-75 transition-opacity"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
+            <div
+                class=" transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                <div class="flex justify-end pt-4 pr-4">
+                    <button type="button" (click)="checkisClosed()"
+                        class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div *ngFor="let item of Members.rankings"
+                    class="flex items-start justify-center space-x-3 m-6 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
+                    <div class="flex-shrink-0">
+                        <img class="h-10 w-10 rounded-full"
+                            src="https://static.vecteezy.com/system/resources/thumbnails/009/972/776/small/people-icon-sign-symbol-design-free-png.png"
+                            alt="...">
+                    </div>
+                    <div class="min-w-0 flex-1 pr-8">
+                        <div class="focus:outline-none">
+                            <p class="text-sm font-medium text-gray-900">{{item.id.member.name}}</p>
+                            <p class="truncate text-sm text-gray-500">{{item.id.member.familyName}}</p>
+                        </div>
+                        <p class="text-sm font-semibold py-1 px-1 bg-gray-100 border shadow rounded-sm text-gray-900">
+                            {{item.id.member.identityDocumentType}} | {{item.id.member.identityNumber}}</p>
+                    </div>
+                    <div class="min-w-0 flex-2">
+                        <div class="focus:outline-none" *ngFor="let fish of item.id.member.huntingList">
+                            <p
+                                class="text-sm font-semibold py-2 px-3 bg-blue-100 border shadow rounded-lg text-gray-900 text-center flex items-center gap-3">
+                                {{fish.numberOfFish}} of {{fish.fish.name}} <ng-icon name="ionFish" class="text-blue-400 text-lg"></ng-icon></p>
+                            <p class="truncate text-sm text-gray-500"></p>
+                        </div>
+                    </div>
+
+                    <div *ngIf="item.id.member.huntingList.length == 0" class="min-w-0 flex-2">
+                        <div class="focus:outline-none">
+                            <p
+                                class="text-sm font-semibold py-2 px-3 bg-red-100 border shadow rounded-lg text-gray-900">
+                                none
+                            <p class="truncate text-sm text-gray-500"></p>
+                        </div>
+                    </div>
+                    <button>
+                        <ng-icon name="heroArchiveBoxXMark" class=" text-red-700 text-2xl cursor-pointer"></ng-icon>
+                    </button>
+                </div>
+                
+                <div (click)="openCreateRanking()" class="cursor-pointer w-10 flex justify-center items-center py-2 bg-blue-200 rounded-xl shadow">
+                    <ng-icon name="heroPlus" class="text-indigo-800 text-2xl"></ng-icon>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-ranking-create [CompetitionCode]="Members.code" *ngIf="isClosed" (closeRankingPopup)="checkisClosed()"></app-ranking-create>

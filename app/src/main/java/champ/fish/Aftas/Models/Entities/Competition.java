@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,13 +29,13 @@ public final class Competition {
     @NotNull
     private LocalDate date;
 
+//    @FutureOrPresent
     @NotNull
-    @FutureOrPresent
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
+//    @FutureOrPresent
     @NotNull
-    @FutureOrPresent
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
     @NotNull
     @Min(value = 0)

@@ -1,9 +1,10 @@
 package champ.fish.Aftas.Models.DTO.Member;
 
 import champ.fish.Aftas.Models.DTO.Competition.CompetitionDTO;
-import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTO;
 import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTOresp;
+import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTOrespNoComp;
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTO;
+import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOrespNoComp;
 import champ.fish.Aftas.Models.Enums.IdentityDocumentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public final class MemberDTOresp {
+public class MemberDTOrespNoComp {
     private Integer num;
     private String name;
     private String familyName;
@@ -24,7 +25,6 @@ public final class MemberDTOresp {
     private IdentityDocumentType identityDocumentType;
     private String identityNumber;
 
-//    private List<RankingDTO> rankings;
-    private List<CompetitionDTO> competitions ;
-    private List<HuntingDTO> huntingList;
+//    private List<RankingDTOrespNoComp> rankings;
+    private List<HuntingDTOrespNoComp> huntingList;
 }

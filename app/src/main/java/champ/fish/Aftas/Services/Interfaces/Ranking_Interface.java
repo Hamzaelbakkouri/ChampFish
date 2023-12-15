@@ -2,6 +2,7 @@ package champ.fish.Aftas.Services.Interfaces;
 
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTO;
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOresp;
+import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOrespNoComp;
 
 import java.util.List;
 
@@ -13,11 +14,11 @@ public interface Ranking_Interface {
 
     Boolean delete(Integer member, String competition);
 
-    RankingDTOresp get(Integer member, String competition);
+    RankingDTOrespNoComp get(Integer member, String competition);
 
-    List<RankingDTOresp> getAll();
+    List<RankingDTOrespNoComp> getAll();
 
     List<RankingDTOresp> CountRankings(String competitionCode);
 
-    List<RankingDTOresp> getRankings(String competitionCode);
+    List<RankingDTOrespNoComp> getRankings(String competitionCode);
 }

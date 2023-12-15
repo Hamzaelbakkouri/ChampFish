@@ -30,7 +30,7 @@ public class CompetitionController {
         if (competitionDTO.getStartTime().isBefore(competitionDTO.getEndTime())) {
             CompetitionDTOresp competitionDTOresp = this.competitionInterface.create(competitionDTO);
             if (competitionDTOresp != null) {
-                result.put("Member", competitionDTOresp);
+                result.put("competition", competitionDTOresp);
                 return ResponseEntity.ok(result);
             }
         } else {

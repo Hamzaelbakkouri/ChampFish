@@ -2,7 +2,7 @@ package champ.fish.Aftas.Controllers;
 
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTO;
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOresp;
-import champ.fish.Aftas.Services.Implementations.RankingService;
+import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOrespNoComp;
 import champ.fish.Aftas.Services.Interfaces.Ranking_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class RankingController {
     public ResponseEntity<?> getRanking(@Valid @PathVariable Integer member, @PathVariable String competition) {
 
         Map<String, Object> result = new HashMap<>();
-        RankingDTOresp rankingDtoResp = this.rankingInterface.get(member , competition);
+        RankingDTOrespNoComp rankingDtoResp = this.rankingInterface.get(member , competition);
         if (rankingDtoResp != null) {
             result.put("Ranking", rankingDtoResp);
             return ResponseEntity.ok(result);
@@ -60,7 +60,7 @@ public class RankingController {
     @GetMapping
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
-        List<RankingDTOresp> rankingDtoRespList = this.rankingInterface.getAll();
+        List<RankingDTOrespNoComp> rankingDtoRespList = this.rankingInterface.getAll();
         if (rankingDtoRespList != null) {
             result.put("Rankings", rankingDtoRespList);
             return ResponseEntity.ok(result);
@@ -89,8 +89,8 @@ public class RankingController {
     }
 
     @GetMapping("/rapport/{competitionCode}")
-    public ResponseEntity<List<RankingDTOresp>> getRapportForCompetition(@PathVariable String competitionCode) {
-        List<RankingDTOresp> rankings = rankingInterface.getRankings(competitionCode);
+    public ResponseEntity<List<RankingDTOrespNoComp>> getRapportForCompetition(@PathVariable String competitionCode) {
+        List<RankingDTOrespNoComp> rankings = rankingInterface.getRankings(competitionCode);
         return ResponseEntity.ok(rankings);
     }
 }
