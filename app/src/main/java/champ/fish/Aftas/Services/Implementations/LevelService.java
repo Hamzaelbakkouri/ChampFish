@@ -25,6 +25,10 @@ public class LevelService implements Level_Interface {
 
     @Override
     public LevelDTOresp create(LevelDTO levelDTO) {
+        Optional<Level> levelBefore = Optional.ofNullable(this.levelRepository.findFirstByCodeBefore(levelDTO.getCode()));
+        if (levelBefore.isPresent() && levelDTO.getPoints() < levelBefore.get().getPoints()) {
+            throw new NotFoundExeption("Must be grater than the before Level");
+        }
         Level level = modelMapper.map(levelDTO, Level.class);
         return modelMapper.map(this.levelRepository.save(level), LevelDTOresp.class);
     }
@@ -36,7 +40,6 @@ public class LevelService implements Level_Interface {
         Level level1 = modelMapper.map(levelDTO, Level.class);
         level1.setCode(levelDTO.getCode());
         return modelMapper.map(this.levelRepository.save(level1), LevelDTOresp.class);
-
     }
 
     @Override

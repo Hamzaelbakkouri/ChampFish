@@ -30,7 +30,7 @@ public class LevelController {
         }
         result.put("Message", "Not Inserted");
         return ResponseEntity.status(400).body(result);
-    }
+    }   
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> updateLevel(@Valid @RequestBody LevelDTO levelDTO, @PathVariable Integer id) {

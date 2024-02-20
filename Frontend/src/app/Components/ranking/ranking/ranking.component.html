@@ -30,29 +30,30 @@
                         <p class="text-sm font-semibold py-1 px-1 bg-gray-100 border shadow rounded-sm text-gray-900">
                             {{item.id.member.identityDocumentType}} | {{item.id.member.identityNumber}}</p>
                     </div>
-                    <div class="min-w-0 flex-2">
-                        <div class="focus:outline-none" *ngFor="let fish of item.id.member.huntingList">
-                            <p
-                                class="text-sm font-semibold py-2 px-3 bg-blue-100 border shadow rounded-lg text-gray-900 text-center flex items-center gap-3">
-                                {{fish.numberOfFish}} of {{fish.fish.name}} <ng-icon name="ionFish" class="text-blue-400 text-lg"></ng-icon></p>
-                            <p class="truncate text-sm text-gray-500"></p>
-                        </div>
-                    </div>
 
-                    <div *ngIf="item.id.member.huntingList.length == 0" class="min-w-0 flex-2">
+                    <!-- <div *ngIf="item.id.member.huntingList.length == 0" class="min-w-0 flex-2">
                         <div class="focus:outline-none">
                             <p
                                 class="text-sm font-semibold py-2 px-3 bg-red-100 border shadow rounded-lg text-gray-900">
                                 none
                             <p class="truncate text-sm text-gray-500"></p>
                         </div>
+                    </div> -->
+
+                    <div class="flex flex-col">
+                        <button>
+                            <ng-icon name="heroArchiveBoxXMark" class=" text-red-700 text-2xl cursor-pointer"></ng-icon>
+                        </button>
+
+                        <button (click)="openHunting(item.id.member.num)" class="pt-7 flex justify-center items-center">
+                            <ng-icon name="ionFish" class="text-blue-500 text-xl"></ng-icon>
+                        </button>
+
                     </div>
-                    <button>
-                        <ng-icon name="heroArchiveBoxXMark" class=" text-red-700 text-2xl cursor-pointer"></ng-icon>
-                    </button>
                 </div>
-                
-                <div (click)="openCreateRanking()" class="cursor-pointer w-10 flex justify-center items-center py-2 bg-blue-200 rounded-xl shadow">
+
+                <div (click)="openCreateRanking()"
+                    class="cursor-pointer w-10 flex justify-center items-center py-2 bg-blue-200 rounded-xl shadow">
                     <ng-icon name="heroPlus" class="text-indigo-800 text-2xl"></ng-icon>
                 </div>
 
@@ -61,4 +62,8 @@
     </div>
 </div>
 
-<app-ranking-create [CompetitionCode]="Members.code" *ngIf="isClosed" (closeRankingPopup)="checkisClosed()"></app-ranking-create>
+<app-ranking-create [CompetitionCode]="Members.code" *ngIf="isClosed"
+    (closeRankingPopup)="checkisClosed()"></app-ranking-create>
+
+<app-hunting (closeCreatingHunting)="closeHunting()" *ngIf="isHuntingClosed" [competition]="competition_Code"
+    [memberNum]="memberNum"></app-hunting>

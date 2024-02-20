@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,7 +57,6 @@ public class HuntingService implements Hunting_Interface {
 
     @Override
     public HuntingDTOresp update(HuntingDTO huntingReq) {
-
         Optional<Hunting> huntingE = huntingRepository.findById(huntingReq.getId());
 
         if (huntingE.isPresent()) {

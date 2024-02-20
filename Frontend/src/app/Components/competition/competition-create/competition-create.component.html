@@ -27,9 +27,12 @@
                                     <label for="first-name" class="block text-sm font-medium text-gray-700">Date</label>
                                     <div class="mt-1">
                                         <input type="date" name="title" id="title" [(ngModel)]="formData.date"
-                                            placeholder="date" autocomplete="given-name"
+                                            placeholder="date" [min]="currentDate | date:'yyyy-MM-dd'"
+                                            autocomplete="given-name"
                                             class="px-4 block w-full rounded-md border-gray-100 border-2 shadow-sm focus:border-black focus:ring-black sm:text-sm py-2">
-                                        <small *ngIf="formData.date == null " class="text-red-500">{{require}}</small>
+
+                                        <small *ngIf="formData.date == null || formData.date <= currentDate "
+                                            class="text-red-500">{{require}}</small>
                                     </div>
                                 </div>
 

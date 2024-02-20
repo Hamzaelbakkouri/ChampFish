@@ -18,7 +18,7 @@ public final class CompetitionDTO {
     private String code;
 
     @NotNull(message = "Date cannot be null")
-    @FutureOrPresent(message = "Date must be in the present or future")
+    @Future(message = "Date must be in the present or future")
     private LocalDate date;
 
 //    @FutureOrPresent(message = "Start time must be in the present or future")

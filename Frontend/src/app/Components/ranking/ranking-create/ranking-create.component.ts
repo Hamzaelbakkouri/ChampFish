@@ -5,6 +5,12 @@ import { ranking } from 'src/app/Models/Ranking';
 import { MemberService } from 'src/app/Services/Member/member.service';
 import { RankingService } from 'src/app/Services/ranking/ranking.service';
 
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
+
 @Component({
   selector: 'app-ranking-create',
   templateUrl: './ranking-create.component.html',
@@ -13,8 +19,8 @@ import { RankingService } from 'src/app/Services/ranking/ranking.service';
 export class RankingCreateComponent implements OnInit {
   @Output() closeRankingPopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() CompetitionCode: string = '';
-  Members: Member[] = []
-  constructor(private MemberService: MemberService, private rankingService: RankingService, private snackBar : MatSnackBar) { }
+  Members: any[] = []
+  constructor(private MemberService: MemberService, private rankingService: RankingService, private snackBar: MatSnackBar) { }
 
   checkisClosed() {
     this.closeRankingPopup.emit(false);
@@ -23,8 +29,11 @@ export class RankingCreateComponent implements OnInit {
   ngOnInit(): void {
     this.MemberService.getAllMember().subscribe((data: any) => {
       this.Members.push(...data.Members)
+      console.log(this.Members);
     })
   }
+
+ 
 
   formdate: ranking = {
     id: {

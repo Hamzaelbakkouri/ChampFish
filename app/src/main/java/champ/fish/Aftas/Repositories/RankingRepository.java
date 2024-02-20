@@ -20,4 +20,6 @@ public interface RankingRepository extends JpaRepository<Ranking, EmbeddedRankin
 
     @Query("select NEW Ranking(r.id.member,r.id.competition,r.score as score,r.rank) from Ranking r WHERE r.id.competition.code =:competitionCode ORDER BY score DESC")
     List<Ranking> getAllByCompetition(@Param("competitionCode") String competitionCode);
+
+
 }

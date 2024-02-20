@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public final class LevelDTO {
+    @NotNull(message = "code can't be Null")
     private int code;
 
     @NotBlank(message = "Description can't be Null")

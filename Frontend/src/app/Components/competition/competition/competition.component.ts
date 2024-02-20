@@ -2,7 +2,9 @@ import { Component, EventEmitter } from '@angular/core';
 import { competition } from 'src/app/Models/Competition';
 import { CompetitionService } from 'src/app/Services/competition/competition.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject } from 'rxjs';
+import { Subject, catchError } from 'rxjs';
+import { RankingService } from 'src/app/Services/ranking/ranking.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-competition',
@@ -20,30 +22,58 @@ export class CompetitionComponent {
   idToDelete: string = '';
   deleteMessage: string = '';
   sendMediaData: EventEmitter<any> = new EventEmitter<any>();
-  paginationSize: number[] = []
+  paginationSize: number = 0;
   currentPage = 0;
   Members: any[] = []
+  itemToPaginate: number = 0;
+  CompetitionCode: string = ''
 
-  constructor(private competitionService: CompetitionService, private snackBar: MatSnackBar) { }
-  // create Subject popup
+  constructor(private competitionService: CompetitionService, private snackBar: MatSnackBar, private rankingService: RankingService, private router: Router) { }
+
   openCreatePopup() {
     this.isCreatePopupOpen = true;
   }
+
+
+  filterCompettion(filter: string) {
+    if (filter == "done") {
+      this.competitionService.getDoneFilter(this.itemToPaginate, 20).subscribe((data: any) => {
+        this.CompetitonList = []
+        this.CompetitonList.push(...data.content);
+        this.paginationSize = data.totalPages
+      });
+    } else if (filter == "inprogress") {
+      this.competitionService.getInProgressFilter(this.itemToPaginate, 20).subscribe((data: any) => {
+        this.CompetitonList = []
+        this.CompetitonList.push(...data.content);
+        this.paginationSize = data.totalPages
+      });
+    } else if (filter == "pending") {
+      this.competitionService.getPendingFilter(this.itemToPaginate, 20).subscribe((data: any) => {
+        this.CompetitonList = []
+        this.CompetitonList.push(...data.content);
+        this.paginationSize = data.totalPages
+      });
+    }
+
+  }
+
 
   closeCreatePopup() {
     this.isCreatePopupOpen = false;
   }
 
-  // delete Subject popup
+
   openPopup(id: any, index: number) {
     this.isPopupOpen = true;
     this.idToDelete = id;
     this.idx = index;
   }
-  sendDataMember = new Subject<any>
-  openMembersPopUp(item: any) {
-    this.Members = item
 
+  // sendDataMember = new Subject<any>
+  openMembersPopUp(item: any, code : string) {
+    this.CompetitionCode = code
+    this.Members = item
     this.isMemberPopupOpen = true;
   }
 
@@ -57,7 +87,8 @@ export class CompetitionComponent {
 
   changePage(index: number): void {
     this.currentPage = index;
-    this.pagination(index, 5)
+    this.pagination(index, 3)
+    this.itemToPaginate = index
   }
 
   openSnackBar(message: string, action: string) {
@@ -73,13 +104,7 @@ export class CompetitionComponent {
   }
 
   ngOnInit(): void {
-    this.competitionService.getAll().subscribe((data: any) => {
-      this.CompetitonList = data.Competitions;
-
-
-      this.paginationSize.push(data.totalPages)
-    });
-
+    this.pagination(0, 3);
     this.competitionService.sendcompetitionData.subscribe((data: any) => {
       // this.CompetitonList[this.idxUpdate] = data.competition;
       this.CompetitonList.push(data);
@@ -90,7 +115,8 @@ export class CompetitionComponent {
 
   pagination(page: number, size: number) {
     this.competitionService.paginate(page, size).subscribe((data: any) => {
-      this.CompetitonList = data.content;
+      this.CompetitonList = []
+      this.CompetitonList.push(...data.content);
       this.paginationSize = data.totalPages
     });
   }
@@ -102,14 +128,20 @@ export class CompetitionComponent {
     this.CompetitonList.splice(idx, 1);
   }
 
-  isDateAllowed(date: any): boolean {
+  isDateAllowed(date: any): string {
     const today = new Date();
-    const year = today.getFullYear() < date[0];
-    const month = today.getMonth() + 1 < date[1];
-    const day = today.getDate() - 1 < date[2];
-    if (year || month || day) {
-      return true;
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+
+    if (year < date[0] || (year === date[0] && month < date[1]) || (year === date[0] && month === date[1] && day < date[2])) {
+      return "inprogress";
+    } else if (year === date[0] && month === date[1] && day === date[2]) {
+      return "pending";
+    } else if (year > date[0] || (year === date[0] && month > date[1]) || (year === date[0] && month === date[1] && day > date[2])) {
+      return "done";
     }
-    return false;
+
+    return ''
   }
 }

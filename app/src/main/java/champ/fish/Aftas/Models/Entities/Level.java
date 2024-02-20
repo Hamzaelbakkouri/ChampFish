@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public final class Level {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     private Integer code;
 
     @Nonnull

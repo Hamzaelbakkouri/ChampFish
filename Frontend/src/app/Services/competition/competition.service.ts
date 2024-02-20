@@ -35,4 +35,16 @@ export class CompetitionService {
     return this.http.get<competition[]>(this.url);
   }
 
+  public getDoneFilter(page: number, size: number): Observable<competition> {
+    return this.http.get<any>(this.url + "/fdone?page=" + page + "&size=" + size);
+  }
+
+  public getInProgressFilter(page: number, size: number): Observable<competition> {
+    return this.http.get<any>(this.url + "/fprogress?page=" + page + "&size=" + size);
+  }
+
+  public getPendingFilter(page: number, size: number): Observable<competition> {
+    return this.http.get<any>(this.url + "/fpending?page=" + page + "&size=" + size);
+  }
+
 }

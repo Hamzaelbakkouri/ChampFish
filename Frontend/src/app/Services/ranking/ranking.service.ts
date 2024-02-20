@@ -32,5 +32,13 @@ export class RankingService {
   public getAll(): Observable<ranking[]> {
     return this.http.get<ranking[]>(this.url);
   }
-  
+
+  public getRapport(competitionCode: string): Observable<ranking[]> {
+    return this.http.get<ranking[]>(this.url + `/rapport/${competitionCode}`);
+  }
+
+  public Count(competitionCode: string): Observable<ranking[]> {
+    return this.http.get<any[]>(this.url + `/done/${competitionCode}`);
+  }
+
 }

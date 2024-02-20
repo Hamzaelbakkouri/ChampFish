@@ -2,6 +2,8 @@ import { ContainerComponent } from './Components/container/container.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompetitionComponent } from './Components/competition/competition/competition.component';
+import { PodiumComponent } from './Components/podium/podium.component';
+import { HuntingComponent } from './Components/Hunting/hunting/hunting.component';
 
 const routes: Routes = [
   {
@@ -12,10 +14,14 @@ const routes: Routes = [
     path: 'competition',
     component: CompetitionComponent,
   },
-  // {
-  //   path: 'ranking',
-  //   component: ,
-  // },
+  {
+    path: 'podium/:code',
+    component: PodiumComponent,
+  },
+  {
+    path: 'hunting',
+    component: HuntingComponent,
+  },
 ]
 
 @NgModule({

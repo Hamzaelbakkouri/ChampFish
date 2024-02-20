@@ -13,6 +13,7 @@ export class CompetitionCreateComponent {
   @Output() closeCreatePopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dataEvent = new EventEmitter<any>();
   require: string = "";
+  currentDate = new Date();
 
   myDate: Date = new Date();
   StartDate: Date = new Date();
@@ -44,14 +45,17 @@ export class CompetitionCreateComponent {
   };
 
   onSubmit() {
-    if (this.formData.code == null || this.formData.date == null || this.formData.startTime == null || this.formData.endTime == null || this.formData.amount == null || this.formData.numberOfParticipants == null) {
-      this.require = "This Field is Requied"
+    if (this.formData.code == null || this.formData.date == null || this.formData.startTime == null || this.formData.endTime == null || this.formData.amount == null || this.formData.numberOfParticipants == null || this.formData.location == null
+    ) {
+      this.require = "This Field is Required";
+    } else if (this.formData.date <= new Date() || this.formData.startTime > this.formData.endTime) {
+      this.require = "Date or Time must be greater than today";
     }
-    this.generateCode()
+    this.generateCode();
     if (this.resultCode) {
-      this.formData.code = this.resultCode
+      this.formData.code = this.resultCode;
     }
-    this.CodeArray = []
+    this.CodeArray = [];
     this.createAnswer(this.formData);
   }
 

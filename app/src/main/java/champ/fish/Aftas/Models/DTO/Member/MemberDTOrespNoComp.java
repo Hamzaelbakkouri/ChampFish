@@ -1,10 +1,6 @@
 package champ.fish.Aftas.Models.DTO.Member;
 
-import champ.fish.Aftas.Models.DTO.Competition.CompetitionDTO;
-import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTOresp;
 import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTOrespNoComp;
-import champ.fish.Aftas.Models.DTO.Ranking.RankingDTO;
-import champ.fish.Aftas.Models.DTO.Ranking.RankingDTOrespNoComp;
 import champ.fish.Aftas.Models.Enums.IdentityDocumentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

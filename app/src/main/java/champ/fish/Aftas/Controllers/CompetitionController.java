@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,10 +78,40 @@ public class CompetitionController {
         return ResponseEntity.status(400).body(result);
     }
 
+//    @GetMapping(path = "/{date}")
+//    public ResponseEntity<Page<CompetitionDTOresp>> filterDoneStatus(@PathVariable  LocalDate date) {
+//        Map<String, Object> result = new HashMap<>();
+//        List<CompetitionDTOresp> competitionDTOrespList = this.competitionInterface.filterDoneStatus(date);
+//        if (competitionDTOrespList != null) {
+//            result.put("Competitions", competitionDTOrespList);
+//            return ResponseEntity.ok(result);
+//        }
+//        result.put("Message", "Competitions Not Found");
+//        return ResponseEntity.status(400).body(result);
+//    }
+
     @GetMapping(path = "/paginate")
     public ResponseEntity<Page<CompetitionDTOresp>> paginateAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(competitionInterface.getAllWithPagination(pageable));
+    }
+
+    @GetMapping(path = "/fdone")
+    public ResponseEntity<Page<CompetitionDTOresp>> paginateDone(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(competitionInterface.filterDoneStatus(LocalDate.now(), pageable));
+    }
+
+    @GetMapping(path = "/fpending")
+    public ResponseEntity<Page<CompetitionDTOresp>> paginateNow(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(competitionInterface.filterPendingStatus(LocalDate.now(), pageable));
+    }
+
+    @GetMapping(path = "/fprogress")
+    public ResponseEntity<Page<CompetitionDTOresp>> paginateInProgress(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(competitionInterface.filterInProgressStatus(LocalDate.now(), pageable));
     }
 
     @DeleteMapping(path = "/{id}")
