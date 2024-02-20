@@ -1,0 +1,51 @@
+<div>
+
+    <div class="w-full flex h-44 justify-center items-center">
+        <p class="text-3xl font-semibold ">Aftas Competition Podium</p>
+    </div>
+
+    <div class="w-full flex justify-center gap-64">
+        <div>
+            <ng-icon name="ionStar" class="text-8xl text-yellow-500 animate-bounce"></ng-icon>
+        </div>
+    </div>
+
+    <div class="w-full flex justify-center items-end gap-1 flex-wrap">
+        <div
+            class="h-80 w-80 font-bold bg-gray-400 text-black bg-opacity-95 border-2 border-black shadow rounded-md flex flex-col items-center justify-evenly transition duration-200 ease-out transform translate-y-2 hover:-translate-y-0">
+            <h1>{{ranking[1].id.member.name}}</h1>
+            <img *ngIf="ranking[1].score != ranking[0].score" class="w-32" src="/assets/medal_2.png" alt="...">
+            <img *ngIf="ranking[1].score == ranking[0].score" class="w-32" src="/assets/medal_1.png" alt="...">
+
+            <p>Score : {{ranking[1].score}}</p>
+        </div>
+        <div
+            class="h-96 w-80 bg-yellow-400 text-black bg-opacity-95 border-2 border-black shadow rounded-md flex flex-col items-center font-bold justify-evenly transition duration-200 ease-out transform translate-y-2 hover:-translate-y-0">
+            <h1>{{ranking[0].id.member.name}}</h1>
+            <img class="w-40" src="/assets/medal_1.png" alt="...">
+            <p>Score : {{ranking[0].score}}</p>
+        </div>
+        <div
+            class="h-64 w-80 bg-[#ac6727] text-black bg-opacity-95 border-2 border-black shadow rounded-md flex flex-col items-center font-bold justify-evenly transition duration-200 ease-out transform translate-y-2 hover:-translate-y-0">
+            <h1>{{ranking[2].id.member.name}}</h1>
+            <img *ngIf="ranking[2].score != ranking[1].score" class="w-24" src="/assets/medal_3.png" alt="...">
+            <img *ngIf="ranking[2].score == ranking[1].score" class="w-24" src="/assets/medal_2.png" alt="...">
+            <p>Score : {{ranking[2].score}}</p>
+        </div>
+    </div>
+
+    <div class="w-full p-10 flex justify-center items-center">
+        <div class="bg-white shadow border rounded-lg px-3 py-5 w-[65%] ">
+            <div class="-space-y-px rounded-md bg-white">
+                <label *ngFor="let item of ranking" class="rounded-md  border p-4 flex">
+                    <div class="pl-3 pb-4 flex justify-around">
+                        <p id="privacy-setting-0-label"
+                            class="block text-sm font-medium">{{item.id.member.name}}</p>
+                        <p id="privacy-setting-0-description"
+                            class="block text-sm">{{item.id.member.nationality}}</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+    </div>
