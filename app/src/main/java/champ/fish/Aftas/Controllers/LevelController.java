@@ -6,6 +6,7 @@ import champ.fish.Aftas.Services.Interfaces.Level_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class LevelController {
     private Level_Interface levelService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> createLevel(@Valid @RequestBody LevelDTO levelDTO) {
         Map<String, Object> result = new HashMap<>();
         LevelDTOresp levelDTOresp = this.levelService.create(levelDTO);
@@ -33,6 +35,7 @@ public class LevelController {
     }   
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> updateLevel(@Valid @RequestBody LevelDTO levelDTO, @PathVariable Integer id) {
         levelDTO.setCode(id);
         Map<String, Object> result = new HashMap<>();
@@ -46,6 +49,7 @@ public class LevelController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getLevel(@Valid @PathVariable Integer id) {
         Map<String, Object> result = new HashMap<>();
         LevelDTOresp levelDTOresp = this.levelService.get(id);
@@ -58,6 +62,7 @@ public class LevelController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
         List<LevelDTOresp> levelDTOrespList = this.levelService.getAll();
@@ -70,6 +75,7 @@ public class LevelController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         Map<String, String> result = new HashMap<>();
         Boolean isDeleted = this.levelService.delete(id);

@@ -4,6 +4,8 @@ import champ.fish.Aftas.Models.Enums.IdentityDocumentType;
 import champ.fish.Aftas.Models.Enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -44,12 +46,15 @@ public final class Member implements UserDetails {
     @NonNull
     private String nationality;
     @NonNull
+    @Column(unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NonNull
+    @Enumerated(EnumType.STRING)
     private IdentityDocumentType identityDocumentType;
+
     @NonNull
     private String identityNumber;
 
@@ -61,6 +66,7 @@ public final class Member implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        System.out.println(role.getAuthorities());
         return role.getAuthorities();
     }
 

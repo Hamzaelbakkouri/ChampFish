@@ -6,6 +6,7 @@ import champ.fish.Aftas.Services.Interfaces.Fish_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class FishController {
     private Fish_Interface fishInterface;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_JURY', 'ROLE_MANAGER')")
     public ResponseEntity<?> createFish(@Valid @RequestBody FishDTO levelDTO) {
         Map<String, Object> result = new HashMap<>();
         FishDTOresp fishDTOresp = this.fishInterface.create(levelDTO);
@@ -33,6 +35,7 @@ public class FishController {
     }
 
     @PutMapping(path = "/{name}")
+    @PreAuthorize("hasAnyAuthority('ROLE_JURY', 'ROLE_MANAGER')")
     public ResponseEntity<?> updateFish(@Valid @RequestBody FishDTO levelDTO, @PathVariable String name) {
         levelDTO.setName(name);
         Map<String, Object> result = new HashMap<>();
@@ -46,6 +49,7 @@ public class FishController {
     }
 
     @GetMapping(path = "/{name}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getFish(@Valid @PathVariable String name) {
         Map<String, Object> result = new HashMap<>();
         FishDTOresp fishDTOresp = this.fishInterface.get(name);
@@ -58,6 +62,7 @@ public class FishController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
         List<FishDTOresp> fishDTOrespList = this.fishInterface.getAll();
@@ -70,6 +75,7 @@ public class FishController {
     }
 
     @DeleteMapping(path = "/{name}")
+    @PreAuthorize("hasAnyAuthority('ROLE_JURY', 'ROLE_MANAGER')")
     public ResponseEntity<?> delete(@PathVariable String name) {
         Map<String, String> result = new HashMap<>();
         Boolean isDeleted = this.fishInterface.delete(name);

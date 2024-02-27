@@ -5,6 +5,7 @@
         </div>
         <div class="ml-4 mt-2 flex-shrink-0">
             <button type="button" (click)="openCreatePopup()"
+            *ngIf="(user |async)?.role == 'MANAGER' || (user |async)?.role == 'JURY'"
                 class="relative inline-flex items-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 uppercase">create
                 Competition</button>
         </div>
@@ -80,7 +81,7 @@
                         </div>
                         <div class="flex gap-6 flex-col items-center">
                             <button>
-                                <ng-icon *ngIf="item.code" name="heroTrash" (click)="openPopup(item.code , idx)"
+                                <ng-icon *ngIf="item.code && (user && (user |async)?.role && (user |async)?.role === 'MANAGER') || (user && (user |async)?.role === 'JURY')" name="heroTrash" (click)="openPopup(item.code , idx)"
                                     class="text-red-700 text-2xl"></ng-icon>
                             </button>
 
@@ -89,7 +90,7 @@
                                 <img class="w-7" src="/assets/ranking.png" alt="ranking_icon" />
                             </button>
 
-                            <button *ngIf="item.code && isDateAllowed(item.date) == 'inprogress' "
+                            <button *ngIf="item.code && isDateAllowed(item.date) == 'inprogress' && (user && (user |async)?.role && (user |async)?.role === 'MANAGER') || (user && (user |async)?.role === 'JURY')"
                                 (click)="openMembersPopUp(item, item.code)" class="hover:bg-blue-200 p-3 rounded-md">
                                 <ng-icon
                                     *ngIf="item.code && isDateAllowed(item.date) == 'inprogress' || isDateAllowed(item.date) == 'pending'"

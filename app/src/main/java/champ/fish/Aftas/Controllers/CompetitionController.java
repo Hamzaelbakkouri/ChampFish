@@ -2,14 +2,21 @@ package champ.fish.Aftas.Controllers;
 
 import champ.fish.Aftas.Models.DTO.Competition.CompetitionDTO;
 import champ.fish.Aftas.Models.DTO.Competition.CompetitionDTOresp;
+import champ.fish.Aftas.Models.DTO.Member.MemberDTOresp;
+import champ.fish.Aftas.Models.DTO.Member.MemberDTOrespNoComp;
+import champ.fish.Aftas.Models.DTO.Member.MemberData;
+import champ.fish.Aftas.Services.Implementations.AuthenticationServiceImpl;
 import champ.fish.Aftas.Services.Interfaces.Competition_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +31,14 @@ import java.util.Map;
 @RequestMapping(path = "/api/competition")
 public class CompetitionController {
     private Competition_Interface competitionInterface;
+    private AuthenticationServiceImpl authenticationService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> createCompetition(@Valid @RequestBody CompetitionDTO competitionDTO) {
         Map<String, Object> result = new HashMap<>();
+        System.out.println(competitionDTO.getStartTime());
+        System.out.println(competitionDTO.getEndTime());
         if (competitionDTO.getStartTime().isBefore(competitionDTO.getEndTime())) {
             CompetitionDTOresp competitionDTOresp = this.competitionInterface.create(competitionDTO);
             if (competitionDTOresp != null) {
@@ -55,6 +66,7 @@ public class CompetitionController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getCompetition(@Valid @PathVariable String id) {
         Map<String, Object> result = new HashMap<>();
         CompetitionDTOresp competitionDTOresp = this.competitionInterface.get(id);
@@ -67,6 +79,7 @@ public class CompetitionController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
         List<CompetitionDTOresp> competitionDTOrespList = this.competitionInterface.getAll();
@@ -115,6 +128,7 @@ public class CompetitionController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> delete(@PathVariable String id) {
         Map<String, String> result = new HashMap<>();
         Boolean isDeleted = this.competitionInterface.delete(id);
@@ -124,5 +138,11 @@ public class CompetitionController {
         }
         result.put("message", "member with " + id + " Not Found");
         return ResponseEntity.status(404).body(result);
+    }
+
+    @PostMapping("/getuser")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
+    public MemberData getUser() {
+        return this.authenticationService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

@@ -6,6 +6,7 @@ import champ.fish.Aftas.Services.Interfaces.Hunting_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class HuntingController {
     private Hunting_Interface huntingInterface;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> createHunting(@Valid @RequestBody HuntingDTO huntingDTO) {
         Map<String, Object> result = new HashMap<>();
         HuntingDTOresp HuntingDto = this.huntingInterface.create(huntingDTO);
@@ -33,6 +35,7 @@ public class HuntingController {
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> updateHunting(@Valid @RequestBody HuntingDTO huntingDTO, @PathVariable Integer id) {
         huntingDTO.setId(id);
         Map<String, Object> result = new HashMap<>();
@@ -46,6 +49,7 @@ public class HuntingController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getHunting(@Valid @PathVariable Integer id) {
         Map<String, Object> result = new HashMap<>();
         HuntingDTOresp HuntingDto = this.huntingInterface.get(id);
@@ -58,6 +62,7 @@ public class HuntingController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
         List<HuntingDTOresp> HuntingDtoList = this.huntingInterface.getAll();
@@ -70,6 +75,7 @@ public class HuntingController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         Map<String, String> result = new HashMap<>();
         Boolean isDeleted = this.huntingInterface.delete(id);

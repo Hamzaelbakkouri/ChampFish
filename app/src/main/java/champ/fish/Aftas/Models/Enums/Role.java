@@ -1,15 +1,15 @@
 package champ.fish.Aftas.Models.Enums;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum Role {
     ADHERENT,
     MANAGER,

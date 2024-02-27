@@ -7,6 +7,7 @@ import champ.fish.Aftas.Services.Interfaces.Ranking_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class RankingController {
     private Ranking_Interface rankingInterface;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> createRanking(@Valid @RequestBody RankingDTO rankingDTO) {
         Map<String, Object> result = new HashMap<>();
         RankingDTOresp rankingDtoResp = this.rankingInterface.create(rankingDTO);
@@ -32,10 +34,11 @@ public class RankingController {
     }
 
     @PutMapping(path = "/{member}/{competition}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> updateRanking(@Valid @RequestBody RankingDTO rankingDTO, @PathVariable Integer member, @PathVariable String competition) {
 
         Map<String, Object> result = new HashMap<>();
-        RankingDTOresp rankingDtoResp = this.rankingInterface.update(rankingDTO, member , competition);
+        RankingDTOresp rankingDtoResp = this.rankingInterface.update(rankingDTO, member, competition);
         if (rankingDtoResp != null) {
             result.put("Ranking", rankingDtoResp);
             return ResponseEntity.ok(result);
@@ -45,10 +48,11 @@ public class RankingController {
     }
 
     @GetMapping(path = "/{member}/{competition}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getRanking(@Valid @PathVariable Integer member, @PathVariable String competition) {
 
         Map<String, Object> result = new HashMap<>();
-        RankingDTOrespNoComp rankingDtoResp = this.rankingInterface.get(member , competition);
+        RankingDTOrespNoComp rankingDtoResp = this.rankingInterface.get(member, competition);
         if (rankingDtoResp != null) {
             result.put("Ranking", rankingDtoResp);
             return ResponseEntity.ok(result);
@@ -58,6 +62,7 @@ public class RankingController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
         List<RankingDTOrespNoComp> rankingDtoRespList = this.rankingInterface.getAll();
@@ -71,9 +76,10 @@ public class RankingController {
 
 
     @DeleteMapping(path = "/{member}/{competition}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY')")
     public ResponseEntity<?> delete(@Valid @PathVariable Integer member, @PathVariable String competition) {
         Map<String, String> result = new HashMap<>();
-        Boolean isDeleted = this.rankingInterface.delete(member , competition);
+        Boolean isDeleted = this.rankingInterface.delete(member, competition);
         if (isDeleted) {
             result.put("message", "ranking deleted successfully");
             return ResponseEntity.ok(result);
@@ -83,12 +89,14 @@ public class RankingController {
     }
 
     @GetMapping("/done/{competitionCode}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<List<RankingDTOresp>> getRankingsForCompetition(@PathVariable String competitionCode) {
         List<RankingDTOresp> rankings = rankingInterface.CountRankings(competitionCode);
         return ResponseEntity.ok(rankings);
     }
 
     @GetMapping("/rapport/{competitionCode}")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_JURY','ROLE_ADHERENT')")
     public ResponseEntity<List<RankingDTOrespNoComp>> getRapportForCompetition(@PathVariable String competitionCode) {
         List<RankingDTOrespNoComp> rankings = rankingInterface.getRankings(competitionCode);
         return ResponseEntity.ok(rankings);

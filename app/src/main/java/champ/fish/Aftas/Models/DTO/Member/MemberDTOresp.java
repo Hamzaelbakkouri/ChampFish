@@ -5,6 +5,7 @@ import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTO;
 import champ.fish.Aftas.Models.DTO.Hunting.HuntingDTOresp;
 import champ.fish.Aftas.Models.DTO.Ranking.RankingDTO;
 import champ.fish.Aftas.Models.Enums.IdentityDocumentType;
+import champ.fish.Aftas.Models.Enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,8 @@ import java.util.List;
 public final class MemberDTOresp {
     private Integer num;
     private String name;
+    private String email;
+    private Role role;
     private String familyName;
     private LocalDate accessionDate;
     private String nationality;

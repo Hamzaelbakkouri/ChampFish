@@ -2,9 +2,11 @@ import { Component, EventEmitter } from '@angular/core';
 import { competition } from 'src/app/Models/Competition';
 import { CompetitionService } from 'src/app/Services/competition/competition.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, catchError } from 'rxjs';
+import { Observable, Subject, catchError } from 'rxjs';
 import { RankingService } from 'src/app/Services/ranking/ranking.service';
 import { Router } from '@angular/router';
+import { TUser } from 'src/app/Models/TUser';
+import { AuthService } from 'src/app/Services/auth/auth.service';
 
 @Component({
   selector: 'app-competition',
@@ -27,8 +29,12 @@ export class CompetitionComponent {
   Members: any[] = []
   itemToPaginate: number = 0;
   CompetitionCode: string = ''
+  // user Autheticated
+  user: Observable<TUser>;
 
-  constructor(private competitionService: CompetitionService, private snackBar: MatSnackBar, private rankingService: RankingService, private router: Router) { }
+  constructor(private competitionService: CompetitionService, private snackBar: MatSnackBar, private rankingService: RankingService, private router: Router, private authService: AuthService) {
+    this.user = authService.authenticatedUser;
+  }
 
   openCreatePopup() {
     this.isCreatePopupOpen = true;
@@ -71,7 +77,7 @@ export class CompetitionComponent {
   }
 
   // sendDataMember = new Subject<any>
-  openMembersPopUp(item: any, code : string) {
+  openMembersPopUp(item: any, code: string) {
     this.CompetitionCode = code
     this.Members = item
     this.isMemberPopupOpen = true;
@@ -144,4 +150,5 @@ export class CompetitionComponent {
 
     return ''
   }
+
 }

@@ -2,10 +2,12 @@ package champ.fish.Aftas.Controllers;
 
 import champ.fish.Aftas.Models.DTO.Member.MemberDTO;
 import champ.fish.Aftas.Models.DTO.Member.MemberDTOresp;
+import champ.fish.Aftas.Models.Enums.Role;
 import champ.fish.Aftas.Services.Interfaces.Member_Interface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +47,18 @@ public class MemberController {
         return ResponseEntity.status(400).body(result);
     }
 
+    @PutMapping("/role/{id}")
+    public ResponseEntity<?> updateRole(@Valid @PathVariable Integer id ,@RequestBody String role){
+        Map<String, Object> result = new HashMap<>();
+        MemberDTOresp member = this.memberService.updateRole(id, role);
+        if (member != null) {
+            result.put("member", member);
+            return ResponseEntity.ok(result);
+        }
+        result.put("Message", "Not Updated");
+        return ResponseEntity.status(400).body(result);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getMember(@Valid @PathVariable Integer id) {
         Map<String, Object> result = new HashMap<>();
@@ -58,6 +72,7 @@ public class MemberController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER')")
     public ResponseEntity<?> getAll() {
         Map<String, Object> result = new HashMap<>();
         List<MemberDTOresp> memberDtorespList = this.memberService.getAll();

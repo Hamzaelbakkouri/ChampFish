@@ -2,7 +2,6 @@ package champ.fish.Aftas.Config;
 
 import champ.fish.Aftas.Repositories.MemberRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

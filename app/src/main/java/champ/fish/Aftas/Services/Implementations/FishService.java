@@ -10,6 +10,7 @@ import champ.fish.Aftas.Repositories.LevelRepository;
 import champ.fish.Aftas.Services.Interfaces.Fish_Interface;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
